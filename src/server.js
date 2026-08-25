@@ -29,7 +29,7 @@ app.use(
 app.use(cookieParser())
 app.use(express.json())
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 
 // Rutas API
 app.use('/api/auth', authRoutes)
