@@ -77,10 +77,11 @@ export const createOrder = async (req, res) => {
         })
     } catch (error) {
         console.log('Error al crear orden:', error)
+        console.log('Detalle de Mercado Pago:', error.response?.data || error.cause)
         res.status(500).json({
             success: false,
             message: 'Error al crear la orden',
-            error: error.message,
+            error: error.response?.data?.message || error.message,
         })
     }
 }

@@ -28,7 +28,8 @@ Content-Type: application/json
     "description": "Taza de One Piece con una descripción lo suficientemente larga para que pase la validación",
     "price": 10000,
     "stock": 10,
-    "imageUrl": "https://res.cloudinary.com/dhls84sly/image/upload/v1755872330/taza_tralaleroTralala_a8gnuh.webp"
+    "imageUrl": "https://res.cloudinary.com/dhls84sly/image/upload/v1755872330/taza_tralaleroTralala_a8gnuh.webp",
+    "category": "TAZAS"
 }
 
 ### PUT ACTUALIZAR PRODUCTO
@@ -46,6 +47,9 @@ GET  http://localhost:3001/api/products/68e8d06950f65ace6f8f2219
 
 ### GET OBTENER TODOS LOS PRODUCTOS
 GET  http://localhost:3001/api/products
+
+### GET OBTENER PRODUCTOS POR CATEGORIA
+GET  http://localhost:3001/api/products?category=TAZAS
 
 ### DELETE ELIMINAR UN PRODUCTO POR SU
 DELETE  http://localhost:3001/api/products/68ed923401051cdf05a9339f

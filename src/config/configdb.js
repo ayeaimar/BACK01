@@ -1,4 +1,7 @@
 import mongoose from 'mongoose'
+import dns from 'node:dns'
+
+dns.setServers(['8.8.8.8', '8.8.4.4'])
 
 export const connectDB = async () => {
     try {
@@ -9,10 +12,15 @@ export const connectDB = async () => {
             .replace('<db_password>', process.env.MONGO_DB_PASSWORD)
             .replace('<db_name>', process.env.MONGO_DB_NAME)
 
+            console.log('USER:', process.env.MONGO_DB_USER)
+            console.log('DB:', process.env.MONGO_DB_NAME)
+            console.log('URI:', dbURI.replace(/\/\/([^:]+):([^@]+)@/,'//$1:*****@'))
         await mongoose.connect(dbURI)
         console.log('Conectado a mongodb')
     } catch (error) {
-        console.error(error)
+        console.error('Error al conectar a MongoDB:',error)
+        throw error
+
     }
 }
 

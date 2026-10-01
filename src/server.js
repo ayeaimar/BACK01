@@ -8,6 +8,7 @@ import orderRoutes from './routes/orderRoutes.js'
 import webhookRoutes from './routes/webhookRoutes.js'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+import path from 'path'
 
 dotenv.config()
 
@@ -28,6 +29,7 @@ app.use(
 )
 app.use(cookieParser())
 app.use(express.json())
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')))
 
 const PORT = process.env.PORT || 3001
 

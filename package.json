@@ -13,6 +13,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "axios": "^1.20.0",
         "bcryptjs": "3.0.2",
         "cookie-parser": "1.4.7",
         "cors": "2.8.5",
@@ -20,9 +21,14 @@
         "dotenv": "17.2.1",
         "express": "5.1.0",
         "express-rate-limit": "8.1.0",
+        "form-data": "^4.0.6",
         "jsonwebtoken": "9.0.2",
         "mercadopago": "2.8.0",
         "mongoose": "8.17.1",
+        "multer": "^2.4.0",
         "zod": "4.0.15"
+    },
+    "devDependencies": {
+        "@types/multer": "^2.2.0"
     }
 }
