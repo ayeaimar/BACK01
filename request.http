@@ -19,7 +19,52 @@ Content-Type: application/json
 
 ### PETICIONES DE PRODUCTOS
 
-### POST CREAR PRODUCTO
+### Las rutas POST, PUT, PATCH y DELETE de productos requieren estar logueado como admin
+### (cookie accessToken del LOGIN). La imagen se envía como multipart en el campo "image".
+
+### POST CREAR PRODUCTO CON IMAGEN (multipart)
+POST http://localhost:3001/api/products
+Content-Type: multipart/form-data; boundary=----PRODUCTO
+
+------PRODUCTO
+Content-Disposition: form-data; name="name"
+
+Taza de One Piece
+------PRODUCTO
+Content-Disposition: form-data; name="description"
+
+Taza de One Piece con una descripción lo suficientemente larga para que pase la validación
+------PRODUCTO
+Content-Disposition: form-data; name="price"
+
+10000
+------PRODUCTO
+Content-Disposition: form-data; name="stock"
+
+10
+------PRODUCTO
+Content-Disposition: form-data; name="category"
+
+TAZAS
+------PRODUCTO
+Content-Disposition: form-data; name="image"; filename="taza.webp"
+Content-Type: image/webp
+
+< ./uploads/1790204205040-388061578.webp
+------PRODUCTO--
+
+### PATCH SETEAR SOLO LA IMAGEN DE UN PRODUCTO
+PATCH http://localhost:3001/api/products/68e8d06950f65ace6f8f2219/image
+Content-Type: multipart/form-data; boundary=----PRODUCTO
+
+------PRODUCTO
+Content-Disposition: form-data; name="image"; filename="taza.webp"
+Content-Type: image/webp
+
+< ./uploads/1790204205040-388061578.webp
+------PRODUCTO--
+
+### POST CREAR PRODUCTO CON URL DE IMAGEN (JSON)
 POST http://localhost:3001/api/products
 Content-Type: application/json
 

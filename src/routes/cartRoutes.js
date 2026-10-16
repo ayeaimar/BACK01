@@ -7,20 +7,25 @@ import {
     clearCart,
     getCartTotal,
 } from '../controllers/cartControllers.js'
+import { validateIsLoggedIn } from '../middlewares/authMiddleware.js'
 const router = express.Router()
 
 // Rutas que verificarn que el usuario accesa solo a su propio carrito
-router.get('/get/:userId', getCart) // getCart
+router.get('/get/:userId', validateIsLoggedIn, getCart) // getCart
 
-router.get('/total/:userId', getCartTotal) // getCartTotal
+router.get('/total/:userId', validateIsLoggedIn, getCartTotal) // getCartTotal
 
-router.put('/update/:userId', updateCart) // updateCart
+router.put('/update/:userId', validateIsLoggedIn, updateCart) // updateCart
 
-router.delete('/removeProduct/:userId', removeProductFromCart) // removeProductFromCart
+router.delete(
+    '/removeProduct/:userId',
+    validateIsLoggedIn,
+    removeProductFromCart
+) // removeProductFromCart
 
-router.delete('/clear/:userId', clearCart) // clearCart
+router.delete('/clear/:userId', validateIsLoggedIn, clearCart) // clearCart
 
 // Ruta para agregar al carrito (no necesita userId)
-router.post('/add', addToCart) // addToCart
+router.post('/add', validateIsLoggedIn, addToCart) // addToCart
 
 export default router

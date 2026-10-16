@@ -76,3 +76,6 @@ temp/
 # MongoDB local files
 *.mongodb
 mongod.lock
+# Imágenes subidas por el admin (filesystem local)
+uploads/*
+!uploads/.gitkeep

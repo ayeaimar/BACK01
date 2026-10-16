@@ -1,28 +1,43 @@
 import multer from 'multer'
-import path from 'path'
-import fs from 'fs'
 
-// Carpeta uploads en la raíz del proyecto backend
-const uploadDir = path.join(process.cwd(), 'uploads')
+export const MAX_IMAGE_SIZE_MB = 5
+export const ALLOWED_IMAGE_TYPES = [
+    'image/jpeg',
+    'image/png',
+    'image/webp',
+    'image/gif',
+]
 
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true })
-}
-
-// 1. Storage para Filesystem local (disco)
-const diskStorage = multer.diskStorage({
-    destination: (_req, _file, cb) => {
-        cb(null, uploadDir)
-    },
-    filename: (_req, file, cb) => {
-        const ext = path.extname(file.originalname)
-        const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`
-        cb(null, `prod-${uniqueSuffix}${ext}`)
+// La imagen queda en memoria (req.file.buffer). El servicio de storage decide
+// si se guarda en el filesystem local o en Postimages.
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: MAX_IMAGE_SIZE_MB * 1024 * 1024, files: 1 },
+    fileFilter: (_req, file, cb) => {
+        if (ALLOWED_IMAGE_TYPES.includes(file.mimetype)) {
+            return cb(null, true)
+        }
+        return cb(new multer.MulterError('LIMIT_UNEXPECTED_FILE', file.fieldname))
     },
 })
 
-// 2. Storage en Memoria (para enviar directo a la API de Postimages)
-const memoryStorage = multer.memoryStorage()
+// Campo del formulario: "image"
+export const uploadProductImage = (req, res, next) => {
+    upload.single('image')(req, res, (error) => {
+        if (!error) return next()
 
-export const uploadLocal = multer({ storage: diskStorage })
-export const uploadMemory = multer({ storage: memoryStorage })
+        if (error instanceof multer.MulterError) {
+            const messages = {
+                LIMIT_FILE_SIZE: `La imagen no puede superar los ${MAX_IMAGE_SIZE_MB} MB`,
+                LIMIT_UNEXPECTED_FILE:
+                    'Formato no permitido. Use JPG, PNG, WEBP o GIF (campo "image")',
+                LIMIT_FILE_COUNT: 'Solo se puede subir una imagen',
+            }
+            return res
+                .status(400)
+                .json({ message: messages[error.code] || error.message })
+        }
+
+        return next(error)
+    })
+}

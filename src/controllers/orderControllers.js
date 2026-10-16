@@ -24,6 +24,7 @@ export const createOrder = async (req, res) => {
 
         // Crear la orden en la base de datos primero
         const newOrder = new OrderModel({
+            userId: req.user._id,
             products: items.map((item) => ({
                 productId: item.id,
                 quantity: item.quantity,

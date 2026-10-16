@@ -17,7 +17,7 @@ const app = express()
 app.use(
     cors({
         origin: process.env.FRONTEND_URL,
-        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
         allowedHeaders: [
             'Content-Type',
             'Authorization',
@@ -29,6 +29,7 @@ app.use(
 )
 app.use(cookieParser())
 app.use(express.json())
+// Imágenes guardadas en el filesystem local (STORAGE_PROVIDER=local)
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')))
 
 const PORT = process.env.PORT || 3001
