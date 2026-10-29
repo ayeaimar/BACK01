@@ -47,6 +47,8 @@ connectDB()
             console.log(`Servidor corriendo en puerto ${PORT}`)
         })
     })
-    .catch(() => {
-        disconnectDB()
+    .catch(async () => {
+        console.error('El servidor NO se inició porque no hay conexión a la base de datos.')
+        await disconnectDB()
+        process.exit(1)
     })

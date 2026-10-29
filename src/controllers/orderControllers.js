@@ -73,7 +73,7 @@ export const createOrder = async (req, res) => {
         res.status(201).json({
             success: true,
             message: 'Orden creada exitosamente',
-            paymentUrl: result.init_point.trim(),
+            paymentUrl: result.sandbox_init_point.trim(),
             preferenceId: result.id,
         })
     } catch (error) {
