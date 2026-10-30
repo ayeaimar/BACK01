@@ -87,18 +87,16 @@ export const getCart = async (req, res) => {
     try {
         const userId = req.user._id
 
-        const cart = await CartModel.findOne({ userId }).populate(
-            'products.productId'
-        )
+        const cart = await CartModel.findOneAndUpdate(
+            { userId },
+            { $setOnInsert: { userId, products: [] } },
+            { new: true, upsert: true }
+        ).populate('products.productId')
 
-        if (cart) {
-            res.status(200).json({
-                message: 'Carrito obtenido con éxito',
-                cart,
-            })
-        } else {
-            res.status(404).json({ message: 'Carrito no econtrado' })
-        }
+        res.status(200).json({
+            message: 'Carrito obtenido con éxito',
+            cart,
+        })
     } catch (error) {
         res.status(500).json({
             message: 'Error del servidor al obtener el carrito',
